@@ -30,11 +30,11 @@ if (!isset($_SESSION['admin_id'])) {
                 <span>Criar Cliente</span>
             </a>
             <a href="listar_clientes.php" class="nav-card">
-                <span class="nav-icon">\n</span>
+                <span class="nav-icon">📋</span>
                 <span>Listar Clientes</span>
             </a>
             <a href="abrir_conta.php" class="nav-card">
-                <span class="nav-icon">\n</span>
+                <span class="nav-icon">💳</span>
                 <span>Abrir Conta / Emitir Cartão</span>
             </a>
         </div>

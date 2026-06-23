@@ -31,17 +31,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $erro = 'Conta Poupança: levantamento máximo de €200,00 por operação.';
     } else {
         $conta->consultarSaldo();
-        if ($conta->debitar($valor)) {
-            $conta->registrarTransacao(
-                $conta->getId(),
-                'levantamento',
-                $valor,
-                'Levantamento ATM - €' . number_format($valor, 2)
-            );
-            $mensagem = 'Levantamento de €' . number_format($valor, 2, ',', '.') . ' realizado com sucesso!';
-            $conta->consultarSaldo();
+        if ($conta->getSaldo() < $valor) {
+            $erro = 'Saldo insuficiente.';
         } else {
-            $erro = 'Saldo insuficiente ou valor não permitido para este tipo de conta.';
+            $db = Database::getConnection();
+            try {
+                $db->beginTransaction();
+                if ($conta->debitar($valor)) {
+                    $conta->registrarTransacao(
+                        $conta->getId(),
+                        'levantamento',
+                        $valor,
+                        'Levantamento ATM - €' . number_format($valor, 2)
+                    );
+                    $db->commit();
+                    $conta->consultarSaldo();
+                    $mensagem = 'Levantamento de €' . number_format($valor, 2, ',', '.') . ' realizado com sucesso!';
+                } else {
+                    $db->rollBack();
+                    $erro = 'Saldo insuficiente ou valor não permitido para este tipo de conta.';
+                }
+            } catch (Exception $e) {
+                $db->rollBack();
+                $erro = 'Erro ao processar levantamento.';
+            }
         }
     }
 }

@@ -29,6 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($entidade) || empty($referencia) || $valor <= 0) {
         $erro = 'Preencha todos os campos corretamente.';
+    } elseif ($conta->getTipo() === 'poupanca' && ($conta->getSaldo() - $valor) < 20) {
+        $erro = 'Conta Poupança: o saldo não pode ficar abaixo de €20,00.';
     } else {
         $conta->consultarSaldo();
         if ($conta->getSaldo() < $valor) {
@@ -38,20 +40,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 $db->beginTransaction();
 
-                $stmt = $db->prepare('UPDATE contas SET saldo = saldo - :valor WHERE id = :id');
-                $stmt->execute([':valor' => $valor, ':id' => $conta->getId()]);
+                if (!$conta->debitar($valor)) {
+                    throw new Exception('Valor não permitido para este tipo de conta.');
+                }
 
                 $descricao = "Pagamento - Entidade: $entidade / Ref: $referencia";
-                $stmt2 = $db->prepare(
-                    'INSERT INTO transacoes (conta_id, tipo, valor, descricao)
-                     VALUES (:conta_id, :tipo, :valor, :descricao)'
-                );
-                $stmt2->execute([
-                    ':conta_id' => $conta->getId(),
-                    ':tipo' => 'pagamento',
-                    ':valor' => $valor,
-                    ':descricao' => $descricao,
-                ]);
+                $conta->registrarTransacao($conta->getId(), 'pagamento', $valor, $descricao);
 
                 $db->commit();
                 $conta->consultarSaldo();

@@ -15,7 +15,9 @@ $mensagem = '';
 $erro = '';
 
 $db = Database::getConnection();
-$clientes = $db->query("SELECT id, nome, email FROM utilizadores WHERE tipo = 'cliente' ORDER BY nome")->fetchAll();
+$stmt = $db->prepare("SELECT id, nome, email FROM utilizadores WHERE tipo = :tipo ORDER BY nome");
+$stmt->execute([':tipo' => 'cliente']);
+$clientes = $stmt->fetchAll();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $clienteId = (int) ($_POST['cliente_id'] ?? 0);

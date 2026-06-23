@@ -30,6 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $erro = 'Preencha todos os campos corretamente.';
     } elseif ($contaDestino == $conta->getId()) {
         $erro = 'Não pode transferir para a mesma conta.';
+    } elseif ($conta->getTipo() === 'poupanca' && ($conta->getSaldo() - $valor) < 20) {
+        $erro = 'Conta Poupança: o saldo não pode ficar abaixo de €20,00.';
     } else {
         $conta->consultarSaldo();
         if ($conta->getSaldo() < $valor) {
@@ -39,45 +41,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 $db->beginTransaction();
 
-                $stmtDestino = $db->prepare('SELECT id FROM contas WHERE id = :id');
-                $stmtDestino->execute([':id' => $contaDestino]);
-                $destinoExiste = $stmtDestino->fetch();
-
-                if (!$destinoExiste) {
+                $contaDestinoObj = Conta::buscarPorId((int) $contaDestino);
+                if (!$contaDestinoObj) {
                     throw new Exception('Conta de destino não encontrada.');
                 }
 
-                $stmt = $db->prepare('UPDATE contas SET saldo = saldo - :valor WHERE id = :id');
-                $stmt->execute([':valor' => $valor, ':id' => $conta->getId()]);
+                if (!$conta->debitar($valor)) {
+                    throw new Exception('Valor não permitido para este tipo de conta.');
+                }
 
-                $stmt2 = $db->prepare('UPDATE contas SET saldo = saldo + :valor WHERE id = :id');
-                $stmt2->execute([':valor' => $valor, ':id' => $contaDestino]);
+                $contaDestinoObj->creditar($valor);
 
-                $descricao = "Transferência enviada para conta #$contaDestino";
-                $stmt3 = $db->prepare(
-                    'INSERT INTO transacoes (conta_id, tipo, valor, descricao, conta_destino_id)
-                     VALUES (:conta_id, :tipo, :valor, :descricao, :conta_destino_id)'
+                $conta->registrarTransacao(
+                    $conta->getId(), 'transferencia', $valor,
+                    "Transferência enviada para conta #$contaDestino", (int) $contaDestino
                 );
-                $stmt3->execute([
-                    ':conta_id' => $conta->getId(),
-                    ':tipo' => 'transferencia',
-                    ':valor' => $valor,
-                    ':descricao' => $descricao,
-                    ':conta_destino_id' => (int) $contaDestino,
-                ]);
 
-                $descricaoDestino = "Transferência recebida da conta #{$conta->getId()}";
-                $stmt4 = $db->prepare(
-                    'INSERT INTO transacoes (conta_id, tipo, valor, descricao, conta_destino_id)
-                     VALUES (:conta_id, :tipo, :valor, :descricao, :conta_destino_id)'
+                $contaDestinoObj->registrarTransacao(
+                    (int) $contaDestino, 'entrada', $valor,
+                    "Transferência recebida da conta #{$conta->getId()}", $conta->getId()
                 );
-                $stmt4->execute([
-                    ':conta_id' => (int) $contaDestino,
-                    ':tipo' => 'entrada',
-                    ':valor' => $valor,
-                    ':descricao' => $descricaoDestino,
-                    ':conta_destino_id' => $conta->getId(),
-                ]);
 
                 $db->commit();
                 $conta->consultarSaldo();

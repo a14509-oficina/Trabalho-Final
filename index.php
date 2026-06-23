@@ -15,12 +15,12 @@ session_start();
         <p>Solução Bancária Modular</p>
         <div class="landing-options">
             <a href="admin/index.php" class="landing-card">
-                <span class="landing-card-icon">\u0001F512</span>
+                <span class="landing-card-icon">🔐</span>
                 <span class="landing-card-title">Admin</span>
                 <span class="landing-card-desc">Painel de Administração</span>
             </a>
             <a href="atm/index.php" class="landing-card">
-                <span class="landing-card-icon">\u0001F3B0</span>
+                <span class="landing-card-icon">🏧</span>
                 <span class="landing-card-title">Multibanco</span>
                 <span class="landing-card-desc">Caixa Automática</span>
             </a>

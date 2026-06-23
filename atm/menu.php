@@ -41,23 +41,23 @@ if (!$conta) {
                 </p>
                 <div class="atm-menu">
                     <a href="saldo.php" class="atm-menu-item">
-                        <span class="atm-menu-icon">\n</span>
+                        <span class="atm-menu-icon">💰</span>
                         <span>Consultar Saldo</span>
                     </a>
                     <a href="levantamento.php" class="atm-menu-item">
-                        <span class="atm-menu-icon">\n</span>
+                        <span class="atm-menu-icon">💸</span>
                         <span>Levantamento</span>
                     </a>
                     <a href="pagamento.php" class="atm-menu-item">
-                        <span class="atm-menu-icon">\n</span>
+                        <span class="atm-menu-icon">📄</span>
                         <span>Pagamento de Serviços</span>
                     </a>
                     <a href="transferencia.php" class="atm-menu-item">
-                        <span class="atm-menu-icon">\n</span>
+                        <span class="atm-menu-icon">🔄</span>
                         <span>Transferência</span>
                     </a>
                     <a href="logout.php" class="atm-menu-item atm-menu-exit">
-                        <span class="atm-menu-icon">\n</span>
+                        <span class="atm-menu-icon">🚪</span>
                         <span>Sair</span>
                     </a>
                 </div>

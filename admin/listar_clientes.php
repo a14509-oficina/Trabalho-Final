@@ -57,14 +57,17 @@ $clientes = Admin::listarClientes();
                                     <td>
                                         <?php
                                         $contas = Admin::obterContasCliente($cliente['id']);
-                                        foreach ($contas as $conta) {
+                                        foreach ($contas as $conta):
                                             $cartoes = Admin::obterCartoesConta($conta['id']);
-                                            $numCartoes = count($cartoes);
-                                            echo htmlspecialchars(ucfirst($conta['tipo']))
-                                                . ' (Saldo: €' . number_format($conta['saldo'], 2) . ')'
-                                                . ' - ' . $numCartoes . ' cartão(ões)<br>';
-                                        }
                                         ?>
+                                            <div style="margin-bottom:8px;padding:8px;background:#f8f9fa;border-radius:6px;">
+                                                <strong><?= ucfirst($conta['tipo']) ?></strong>
+                                                — Saldo: €<?= number_format($conta['saldo'], 2) ?>
+                                                <?php foreach ($cartoes as $c): ?>
+                                                    <br><small>Cartão: **** **** **** <?= substr($c['numero_cartao'], -4) ?></small>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        <?php endforeach; ?>
                                     </td>
                                     <td>
                                         <a href="abrir_conta.php?cliente_id=<?= $cliente['id'] ?>" class="btn btn-sm btn-primary">Abrir Conta</a>

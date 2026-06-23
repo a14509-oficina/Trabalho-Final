@@ -19,7 +19,7 @@ unset($_SESSION['atm_erro']);
                 <h2>Caixa Multibanco</h2>
             </div>
             <div class="atm-body">
-                <div class="atm-icon">\u0001F3B0</div>
+                <div class="atm-icon">🏧</div>
                 <p class="atm-instruction">Insira o seu cartão</p>
                 <?php if ($erro): ?>
                     <div class="atm-error"><?= htmlspecialchars($erro) ?></div>

@@ -15,8 +15,9 @@ unset($_SESSION['atm_erro']);
     <div class="atm-container">
         <div class="atm-screen">
             <div class="atm-header">
-                <h1>DevBank</h1>
-                <h2>Caixa Multibanco</h2>
+                <h1>MULTIBANCO</h1>
+                <span class="atm-sub">DevBank</span>
+                <h2>Caixa Automática</h2>
             </div>
             <div class="atm-body">
                 <div class="atm-icon">🏧</div>
@@ -41,6 +42,10 @@ unset($_SESSION['atm_erro']);
                 </form>
             </div>
             <div class="atm-footer">
+                <div class="atm-card-slot">
+                    <span class="slot-icon"></span>
+                    <span>Insira o cartão</span>
+                </div>
                 <a href="../index.php" class="atm-btn atm-btn-secondary">Sair</a>
             </div>
         </div>

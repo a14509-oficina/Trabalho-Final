@@ -11,18 +11,18 @@ session_start();
 </head>
 <body class="landing-page">
     <div class="landing-container">
-        <h1>DevBank</h1>
-        <p>Solução Bancária Modular</p>
+        <h1>MULTIBANCO</h1>
+        <p class="landing-sub">DevBank</p>
         <div class="landing-options">
-            <a href="admin/index.php" class="landing-card">
-                <span class="landing-card-icon">🔐</span>
-                <span class="landing-card-title">Admin</span>
-                <span class="landing-card-desc">Painel de Administração</span>
-            </a>
-            <a href="atm/index.php" class="landing-card">
+            <a href="atm/index.php" class="landing-card landing-card-atm">
                 <span class="landing-card-icon">🏧</span>
                 <span class="landing-card-title">Multibanco</span>
                 <span class="landing-card-desc">Caixa Automática</span>
+            </a>
+            <a href="admin/index.php" class="landing-card landing-card-admin">
+                <span class="landing-card-icon">🔐</span>
+                <span class="landing-card-title">Admin</span>
+                <span class="landing-card-desc">Painel de Administração</span>
             </a>
         </div>
     </div>

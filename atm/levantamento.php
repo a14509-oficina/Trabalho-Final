@@ -2,9 +2,6 @@
 session_start();
 require_once __DIR__ . '/../classes/Database.php';
 require_once __DIR__ . '/../classes/Conta.php';
-require_once __DIR__ . '/../classes/ContaCorrente.php';
-require_once __DIR__ . '/../classes/ContaPoupanca.php';
-require_once __DIR__ . '/../classes/HistoricoTrait.php';
 
 if (!isset($_SESSION['atm_conta_id'])) {
     header('Location: index.php');
@@ -71,7 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="atm-container">
         <div class="atm-screen">
             <div class="atm-header">
-                <h1>DevBank</h1>
+                <h1>MULTIBANCO</h1>
+                <span class="atm-sub">DevBank</span>
                 <h2>Levantamento</h2>
             </div>
             <div class="atm-body">

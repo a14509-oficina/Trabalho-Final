@@ -16,7 +16,7 @@ if ($isProd) {
     define('DB_PASS', 'tua_password_aqui');
 } else {
     // ========== LOCAL (XAMPP) ==========
-    define('DB_HOST', 'localhost');
+    define('DB_HOST', '127.0.0.1');
     define('DB_NAME', 'devbank');
     define('DB_USER', 'root');
     define('DB_PASS', '');

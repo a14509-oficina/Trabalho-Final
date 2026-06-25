@@ -40,8 +40,8 @@ if (!verificarRateLimit('atm_login')) {
                     <div class="atm-input-group">
                         <label for="numero_cartao">Número do Cartão</label>
                         <input type="text" id="numero_cartao" name="numero_cartao"
-                               maxlength="16" pattern="[0-9]{16}" inputmode="numeric"
-                               placeholder="0000 0000 0000 0000" required>
+                               maxlength="19" inputmode="numeric"
+                               placeholder="0000 0000 0000 0000" autocomplete="off" required>
                     </div>
                     <div class="atm-input-group">
                         <label for="pin">PIN</label>

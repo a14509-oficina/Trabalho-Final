@@ -25,6 +25,9 @@ if (!isset($_SESSION['admin_id'])) {
                 <span>Bem-vindo, <?= htmlspecialchars($_SESSION['admin_nome']) ?></span>
                 <a href="logout.php" class="btn btn-danger">Sair</a>
             </div>
+            <div style="text-align:right;margin-top:10px;">
+                <a href="../atm/index.php" class="btn btn-primary" style="text-decoration:none;">Ir para o Multibanco</a>
+            </div>
         </div>
         <div class="admin-nav">
             <a href="criar_cliente.php" class="nav-card">

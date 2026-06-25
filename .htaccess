@@ -1,0 +1,45 @@
+# ========== SEGURANCA ==========
+
+# Proteger ficheiros sensiveis
+<FilesMatch "\.(sql|md|env|log)$">
+    Require all denied
+</FilesMatch>
+
+# Proteger classes e config
+<IfModule mod_rewrite.c>
+    RewriteRule ^classes/ - [F,L]
+    RewriteRule ^config/ - [F,L]
+    RewriteRule ^setup/ - [F,L]
+    RewriteRule ^\.htaccess - [F,L]
+</IfModule>
+
+# Desativar listagem de diretorias
+Options -Indexes
+
+# Proteger contra clickjacking
+Header always append X-Frame-Options SAMEORIGIN
+
+# Proteger contra XSS
+Header always set X-Content-Type-Options nosniff
+
+# ========== CHARSET ==========
+AddDefaultCharset UTF-8
+
+# ========== COMPRESSAO ==========
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript
+</IfModule>
+
+# ========== CACHE ==========
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+</IfModule>
+
+# ========== PHP CONFIG ==========
+<IfModule mod_php.c>
+    php_flag session.cookie_httponly on
+    php_flag session.use_only_cookies on
+    php_flag session.cookie_secure off
+</IfModule>

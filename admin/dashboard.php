@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/../classes/Database.php';
+require_once __DIR__ . '/../classes/helpers.php';
 
 if (!isset($_SESSION['admin_id'])) {
     header('Location: index.php');
@@ -14,6 +15,7 @@ if (!isset($_SESSION['admin_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DevBank - Dashboard</title>
     <link rel="stylesheet" href="../assets/style.css">
+    <script src="../assets/script.js" defer></script>
 </head>
 <body class="admin-page">
     <div class="admin-container">
@@ -36,6 +38,10 @@ if (!isset($_SESSION['admin_id'])) {
             <a href="abrir_conta.php" class="nav-card">
                 <span class="nav-icon">💳</span>
                 <span>Abrir Conta / Emitir Cartão</span>
+            </a>
+            <a href="repor_pin.php" class="nav-card">
+                <span class="nav-icon">🔑</span>
+                <span>Repor PIN de Cartão</span>
             </a>
         </div>
     </div>

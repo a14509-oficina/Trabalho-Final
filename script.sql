@@ -41,6 +41,15 @@ CREATE TABLE transacoes (
     FOREIGN KEY (conta_destino_id) REFERENCES contas(id) ON DELETE SET NULL
 );
 
+CREATE TABLE login_log (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tipo VARCHAR(20) NOT NULL,
+    identificador VARCHAR(255) NOT NULL,
+    sucesso TINYINT(1) NOT NULL DEFAULT 0,
+    ip VARCHAR(45),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- IMPORTANTE: Executa primeiro: php setup/gerar_hashes.php
 -- Depois substitui as hashes abaixo pelas geradas.
 -- PIN do cartao de teste: 1234 (4 digitos)

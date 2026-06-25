@@ -2,6 +2,7 @@
 session_start();
 require_once __DIR__ . '/../classes/Database.php';
 require_once __DIR__ . '/../classes/Conta.php';
+require_once __DIR__ . '/../classes/helpers.php';
 
 if (!isset($_SESSION['atm_conta_id'])) {
     header('Location: index.php');
@@ -17,40 +18,47 @@ if (!$conta) {
 
 $mensagem = '';
 $erro = '';
+$comprovativo = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $valor = str_replace(',', '.', $_POST['valor'] ?? '');
-    $valor = (float) $valor;
-
-    if ($valor <= 0) {
-        $erro = 'Insira um valor válido.';
-    } elseif ($conta->getTipo() === 'poupanca' && $valor > 200) {
-        $erro = 'Conta Poupança: levantamento máximo de €200,00 por operação.';
+    $token = $_POST['csrf_token'] ?? '';
+    if (!validarTokenCSRF($token)) {
+        $erro = 'Sessão inválida.';
     } else {
-        $conta->consultarSaldo();
-        if ($conta->getSaldo() < $valor) {
-            $erro = 'Saldo insuficiente.';
+        $valor = str_replace(',', '.', $_POST['valor'] ?? '');
+        $valor = (float) $valor;
+
+        if ($valor <= 0) {
+            $erro = 'Insira um valor válido.';
+        } elseif ($conta->getTipo() === 'poupanca' && $valor > 200) {
+            $erro = 'Conta Poupança: levantamento máximo de €200,00 por operação.';
         } else {
-            $db = Database::getConnection();
-            try {
-                $db->beginTransaction();
-                if ($conta->debitar($valor)) {
-                    $conta->registrarTransacao(
-                        $conta->getId(),
-                        'levantamento',
-                        $valor,
-                        'Levantamento ATM - €' . number_format($valor, 2)
-                    );
-                    $db->commit();
-                    $conta->consultarSaldo();
-                    $mensagem = 'Levantamento de €' . number_format($valor, 2, ',', '.') . ' realizado com sucesso!';
-                } else {
+            $conta->consultarSaldo();
+            if ($conta->getSaldo() < $valor) {
+                $erro = 'Saldo insuficiente.';
+            } else {
+                $db = Database::getConnection();
+                try {
+                    $db->beginTransaction();
+                    if ($conta->debitar($valor)) {
+                        $conta->registrarTransacao(
+                            $conta->getId(),
+                            'levantamento',
+                            $valor,
+                            'Levantamento ATM - €' . number_format($valor, 2)
+                        );
+                        $db->commit();
+                        $conta->consultarSaldo();
+                        $mensagem = 'Levantamento de €' . number_format($valor, 2, ',', '.') . ' realizado com sucesso!';
+                        $comprovativo = gerarComprovativo('Levantamento', $valor, 'Multibanco', $conta->getSaldo());
+                    } else {
+                        $db->rollBack();
+                        $erro = 'Saldo insuficiente ou valor não permitido para este tipo de conta.';
+                    }
+                } catch (Exception $e) {
                     $db->rollBack();
-                    $erro = 'Saldo insuficiente ou valor não permitido para este tipo de conta.';
+                    $erro = 'Erro ao processar levantamento.';
                 }
-            } catch (Exception $e) {
-                $db->rollBack();
-                $erro = 'Erro ao processar levantamento.';
             }
         }
     }
@@ -63,6 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DevBank - Levantamento</title>
     <link rel="stylesheet" href="../assets/style.css">
+    <script src="../assets/script.js" defer></script>
 </head>
 <body class="atm-page">
     <div class="atm-container">
@@ -83,6 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endif; ?>
 
                 <form method="POST" action="" class="atm-form">
+                    <?= campoCSRF() ?>
                     <div class="atm-input-group">
                         <label for="valor">Valor a Levantar (€)</label>
                         <input type="text" id="valor" name="valor"
@@ -90,6 +100,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <button type="submit" class="atm-btn">Levantar</button>
                 </form>
+
+                <?php if ($comprovativo): ?>
+                    <div style="display:none;" id="comprovativo">
+                        <h2>MULTIBANCO</h2>
+                        <p>DevBank</p>
+                        <div class="linha"></div>
+                        <p><strong>LEVANTAMENTO</strong></p>
+                        <p class="codigo">Cód: <?= $comprovativo['codigo'] ?></p>
+                        <p><?= $comprovativo['data'] ?></p>
+                        <p class="valor">€ <?= number_format($comprovativo['valor'], 2, ',', '.') ?></p>
+                        <p><?= $comprovativo['descricao'] ?></p>
+                        <div class="linha"></div>
+                        <p>Saldo Atual: € <?= number_format($comprovativo['saldo_atual'], 2, ',', '.') ?></p>
+                        <div class="linha"></div>
+                        <p><small>Obrigado por utilizar o Multibanco</small></p>
+                    </div>
+                    <button onclick="imprimirComprovativo()" class="atm-btn">Imprimir Comprovativo</button>
+                <?php endif; ?>
 
                 <div class="atm-actions">
                     <a href="menu.php" class="atm-btn atm-btn-secondary">Voltar ao Menu</a>

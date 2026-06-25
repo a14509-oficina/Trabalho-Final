@@ -2,6 +2,7 @@
 session_start();
 require_once __DIR__ . '/../classes/Database.php';
 require_once __DIR__ . '/../classes/Conta.php';
+require_once __DIR__ . '/../classes/helpers.php';
 
 if (!isset($_SESSION['atm_conta_id'])) {
     header('Location: index.php');
@@ -17,39 +18,46 @@ if (!$conta) {
 
 $mensagem = '';
 $erro = '';
+$comprovativo = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $entidade = trim($_POST['entidade'] ?? '');
-    $referencia = trim($_POST['referencia'] ?? '');
-    $valor = str_replace(',', '.', $_POST['valor'] ?? '');
-    $valor = (float) $valor;
-
-    if (empty($entidade) || empty($referencia) || $valor <= 0) {
-        $erro = 'Preencha todos os campos corretamente.';
-    } elseif ($conta->getTipo() === 'poupanca' && ($conta->getSaldo() - $valor) < 20) {
-        $erro = 'Conta Poupança: o saldo não pode ficar abaixo de €20,00.';
+    $token = $_POST['csrf_token'] ?? '';
+    if (!validarTokenCSRF($token)) {
+        $erro = 'Sessão inválida.';
     } else {
-        $conta->consultarSaldo();
-        if ($conta->getSaldo() < $valor) {
-            $erro = 'Saldo insuficiente para este pagamento.';
+        $entidade = trim($_POST['entidade'] ?? '');
+        $referencia = trim($_POST['referencia'] ?? '');
+        $valor = str_replace(',', '.', $_POST['valor'] ?? '');
+        $valor = (float) $valor;
+
+        if (empty($entidade) || empty($referencia) || $valor <= 0) {
+            $erro = 'Preencha todos os campos corretamente.';
+        } elseif ($conta->getTipo() === 'poupanca' && ($conta->getSaldo() - $valor) < 20) {
+            $erro = 'Conta Poupança: o saldo não pode ficar abaixo de €20,00.';
         } else {
-            $db = Database::getConnection();
-            try {
-                $db->beginTransaction();
+            $conta->consultarSaldo();
+            if ($conta->getSaldo() < $valor) {
+                $erro = 'Saldo insuficiente para este pagamento.';
+            } else {
+                $db = Database::getConnection();
+                try {
+                    $db->beginTransaction();
 
-                if (!$conta->debitar($valor)) {
-                    throw new Exception('Valor não permitido para este tipo de conta.');
+                    if (!$conta->debitar($valor)) {
+                        throw new Exception('Valor não permitido para este tipo de conta.');
+                    }
+
+                    $descricao = "Pagamento - Entidade: $entidade / Ref: $referencia";
+                    $conta->registrarTransacao($conta->getId(), 'pagamento', $valor, $descricao);
+
+                    $db->commit();
+                    $conta->consultarSaldo();
+                    $mensagem = 'Pagamento de €' . number_format($valor, 2, ',', '.') . ' realizado com sucesso!';
+                    $comprovativo = gerarComprovativo('Pagamento', $valor, "Ent:$entidade Ref:$referencia", $conta->getSaldo());
+                } catch (Exception $e) {
+                    $db->rollBack();
+                    $erro = 'Erro ao processar pagamento: ' . $e->getMessage();
                 }
-
-                $descricao = "Pagamento - Entidade: $entidade / Ref: $referencia";
-                $conta->registrarTransacao($conta->getId(), 'pagamento', $valor, $descricao);
-
-                $db->commit();
-                $conta->consultarSaldo();
-                $mensagem = 'Pagamento de €' . number_format($valor, 2, ',', '.') . ' realizado com sucesso!';
-            } catch (Exception $e) {
-                $db->rollBack();
-                $erro = 'Erro ao processar pagamento: ' . $e->getMessage();
             }
         }
     }
@@ -62,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DevBank - Pagamento de Serviços</title>
     <link rel="stylesheet" href="../assets/style.css">
+    <script src="../assets/script.js" defer></script>
 </head>
 <body class="atm-page">
     <div class="atm-container">
@@ -82,6 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endif; ?>
 
                 <form method="POST" action="" class="atm-form">
+                    <?= campoCSRF() ?>
                     <div class="atm-input-group">
                         <label for="entidade">Entidade</label>
                         <input type="text" id="entidade" name="entidade" maxlength="5" required>
@@ -94,8 +104,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label for="valor">Valor (€)</label>
                         <input type="text" id="valor" name="valor" placeholder="0.00" inputmode="decimal" required>
                     </div>
-                    <button type="submit" class="atm-btn">Pagar</button>
+                    <button type="submit" class="atm-btn" data-confirm="Confirmar pagamento de €?">Pagar</button>
                 </form>
+
+                <?php if ($comprovativo): ?>
+                    <div style="display:none;" id="comprovativo">
+                        <h2>MULTIBANCO</h2>
+                        <p>DevBank</p>
+                        <div class="linha"></div>
+                        <p><strong>PAGAMENTO SERVIÇOS</strong></p>
+                        <p class="codigo">Cód: <?= $comprovativo['codigo'] ?></p>
+                        <p><?= $comprovativo['data'] ?></p>
+                        <p class="valor">€ <?= number_format($comprovativo['valor'], 2, ',', '.') ?></p>
+                        <p><?= $comprovativo['descricao'] ?></p>
+                        <div class="linha"></div>
+                        <p>Saldo Atual: € <?= number_format($comprovativo['saldo_atual'], 2, ',', '.') ?></p>
+                        <div class="linha"></div>
+                        <p><small>Obrigado por utilizar o Multibanco</small></p>
+                    </div>
+                    <button onclick="imprimirComprovativo()" class="atm-btn">Imprimir Comprovativo</button>
+                <?php endif; ?>
 
                 <div class="atm-actions">
                     <a href="menu.php" class="atm-btn atm-btn-secondary">Voltar ao Menu</a>

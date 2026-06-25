@@ -771,4 +771,105 @@ body {
         flex-direction: column;
         align-items: center;
     }
+    .landing-container h1 {
+        font-size: 32px;
+        letter-spacing: 6px;
+    }
+    .landing-card {
+        padding: 30px 40px;
+    }
+    .atm-container {
+        padding: 10px;
+    }
+    .atm-screen {
+        border-radius: 16px;
+        box-shadow:
+            0 0 0 6px #2a2a3e,
+            0 0 0 8px #1a1a2e,
+            0 0 0 10px #3a3a4e,
+            0 10px 40px rgba(0,0,0,0.7);
+    }
+    .atm-header h1 {
+        font-size: 20px;
+        letter-spacing: 4px;
+    }
+    .atm-body {
+        padding: 16px;
+    }
+    .atm-menu {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    .atm-menu-item {
+        min-height: 60px;
+        padding: 14px;
+        flex-direction: row;
+    }
+    .atm-menu-item span:last-child {
+        font-size: 13px;
+    }
+    .atm-saldo-value {
+        font-size: 28px;
+    }
+    .atm-info {
+        font-size: 12px;
+    }
+    .admin-container {
+        padding: 10px;
+    }
+    .admin-content {
+        padding: 20px;
+    }
+    .admin-header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    .form-actions {
+        flex-direction: column;
+    }
+    .form-actions .btn {
+        width: 100%;
+        text-align: center;
+    }
+    .table-wrapper {
+        font-size: 12px;
+    }
+    .admin-table th,
+    .admin-table td {
+        padding: 8px 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .landing-container h1 {
+        font-size: 24px;
+        letter-spacing: 4px;
+    }
+    .landing-card {
+        padding: 20px 30px;
+    }
+    .landing-card-icon {
+        font-size: 36px;
+    }
+    .atm-header {
+        padding: 14px;
+    }
+    .atm-header h1 {
+        font-size: 18px;
+    }
+    .atm-input-group input {
+        font-size: 16px;
+        padding: 12px;
+    }
+    .atm-btn {
+        font-size: 13px;
+        padding: 12px;
+    }
+    .admin-header h1 {
+        font-size: 18px;
+    }
+    .login-card {
+        padding: 24px;
+    }
 }

@@ -2,6 +2,7 @@
 session_start();
 require_once __DIR__ . '/../classes/Database.php';
 require_once __DIR__ . '/../classes/Admin.php';
+require_once __DIR__ . '/../classes/helpers.php';
 
 if (!isset($_SESSION['admin_id'])) {
     header('Location: index.php');
@@ -17,6 +18,7 @@ $clientes = Admin::listarClientes();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DevBank - Listar Clientes</title>
     <link rel="stylesheet" href="../assets/style.css">
+    <script src="../assets/script.js" defer></script>
 </head>
 <body class="admin-page">
     <div class="admin-container">

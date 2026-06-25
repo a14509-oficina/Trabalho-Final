@@ -1,9 +1,8 @@
 <?php
 session_start();
 require_once __DIR__ . '/../classes/Database.php';
-require_once __DIR__ . '/../classes/Utilizador.php';
 require_once __DIR__ . '/../classes/Admin.php';
-require_once __DIR__ . '/../classes/HistoricoTrait.php';
+require_once __DIR__ . '/../classes/helpers.php';
 
 if (!isset($_SESSION['admin_id'])) {
     header('Location: index.php');
@@ -16,28 +15,33 @@ $erro = '';
 $novoClienteId = 0;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome = trim($_POST['nome'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
-
-    if (!empty($nome) && !empty($email) && !empty($password)) {
-        try {
-            $novoId = $admin->criarCliente($nome, $email, $password);
-            if ($novoId) {
-                $mensagem = 'Cliente criado com sucesso!';
-                $novoClienteId = $novoId;
-            } else {
-                $erro = 'Erro ao criar cliente.';
-            }
-        } catch (PDOException $e) {
-            if ($e->getCode() == 23000) {
-                $erro = 'Este email já está registado.';
-            } else {
-                $erro = 'Erro na base de dados: ' . $e->getMessage();
-            }
-        }
+    $token = $_POST['csrf_token'] ?? '';
+    if (!validarTokenCSRF($token)) {
+        $erro = 'Sessão inválida. Tente novamente.';
     } else {
-        $erro = 'Preencha todos os campos.';
+        $nome = trim($_POST['nome'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $password = $_POST['password'] ?? '';
+
+        if (!empty($nome) && !empty($email) && !empty($password)) {
+            try {
+                $novoId = $admin->criarCliente($nome, $email, $password);
+                if ($novoId) {
+                    $mensagem = 'Cliente criado com sucesso!';
+                    $novoClienteId = $novoId;
+                } else {
+                    $erro = 'Erro ao criar cliente.';
+                }
+            } catch (PDOException $e) {
+                if ($e->getCode() == 23000) {
+                    $erro = 'Este email já está registado.';
+                } else {
+                    $erro = 'Erro na base de dados: ' . $e->getMessage();
+                }
+            }
+        } else {
+            $erro = 'Preencha todos os campos.';
+        }
     }
 }
 ?>
@@ -48,6 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DevBank - Criar Cliente</title>
     <link rel="stylesheet" href="../assets/style.css">
+    <script src="../assets/script.js" defer></script>
 </head>
 <body class="admin-page">
     <div class="admin-container">
@@ -73,6 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="alert alert-danger"><?= htmlspecialchars($erro) ?></div>
             <?php endif; ?>
             <form method="POST" action="" class="admin-form">
+                <?= campoCSRF() ?>
                 <div class="form-group">
                     <label for="nome">Nome Completo</label>
                     <input type="text" id="nome" name="nome" required>

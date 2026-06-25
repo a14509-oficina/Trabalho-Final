@@ -1,7 +1,17 @@
 <?php
 session_start();
+require_once __DIR__ . '/../classes/helpers.php';
+
 $erro = $_SESSION['atm_erro'] ?? '';
 unset($_SESSION['atm_erro']);
+
+$bloqueado = false;
+$tempoRestante = 0;
+if (!verificarRateLimit('atm_login')) {
+    $bloqueado = true;
+    $tempoRestante = tempoRestanteBloqueio('atm_login');
+    $erro = "Cartão bloqueado temporariamente. Tente novamente em $tempoRestante segundos.";
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt">
@@ -10,6 +20,7 @@ unset($_SESSION['atm_erro']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DevBank - Multibanco</title>
     <link rel="stylesheet" href="../assets/style.css">
+    <script src="../assets/script.js" defer></script>
 </head>
 <body class="atm-page">
     <div class="atm-container">
@@ -38,7 +49,8 @@ unset($_SESSION['atm_erro']);
                                maxlength="4" pattern="[0-9]{4}" inputmode="numeric"
                                placeholder="****" required>
                     </div>
-                    <button type="submit" class="atm-btn">Confirmar</button>
+                    <?= campoCSRF() ?>
+                    <button type="submit" class="atm-btn" <?= $bloqueado ? 'disabled' : '' ?>>Confirmar</button>
                 </form>
             </div>
             <div class="atm-footer">

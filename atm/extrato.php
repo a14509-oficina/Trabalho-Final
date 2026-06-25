@@ -16,15 +16,26 @@ if (!$conta) {
     exit;
 }
 
-$saldo = $conta->consultarSaldo();
-$movimentos = $conta->getUltimosMovimentos(5);
+$dataInicio = $_GET['data_inicio'] ?? date('Y-m-01');
+$dataFim = $_GET['data_fim'] ?? date('Y-m-d');
+
+$db = Database::getConnection();
+$stmt = $db->prepare(
+    'SELECT * FROM transacoes WHERE conta_id = :conta_id AND DATE(data_hora) BETWEEN :inicio AND :fim ORDER BY data_hora DESC'
+);
+$stmt->execute([
+    ':conta_id' => $conta->getId(),
+    ':inicio' => $dataInicio,
+    ':fim' => $dataFim,
+]);
+$movimentos = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevBank - Saldo e Movimentos</title>
+    <title>DevBank - Extrato</title>
     <link rel="stylesheet" href="../assets/style.css">
     <script src="../assets/script.js" defer></script>
 </head>
@@ -34,19 +45,29 @@ $movimentos = $conta->getUltimosMovimentos(5);
             <div class="atm-header">
                 <h1>MULTIBANCO</h1>
                 <span class="atm-sub">DevBank</span>
-                <h2>Saldo e Movimentos</h2>
+                <h2>Extrato</h2>
             </div>
             <div class="atm-body">
-                <div class="atm-saldo-box">
-                    <p class="atm-saldo-label">Saldo Atual</p>
-                    <p class="atm-saldo-value">€ <?= number_format($saldo, 2, ',', '.') ?></p>
-                </div>
+                <p class="atm-info">
+                    Saldo Atual: <strong>€ <?= number_format($conta->consultarSaldo(), 2, ',', '.') ?></strong>
+                </p>
 
-                <div class="atm-movimentos">
-                    <h3>Últimos Movimentos</h3>
-                    <?php if (empty($movimentos)): ?>
-                        <p class="atm-empty">Nenhum movimento registado.</p>
-                    <?php else: ?>
+                <form method="GET" action="" class="atm-form" style="display:flex;gap:8px;margin-bottom:16px;align-items:end;">
+                    <div class="atm-input-group" style="flex:1;margin-bottom:0;">
+                        <label for="data_inicio">De</label>
+                        <input type="date" id="data_inicio" name="data_inicio" value="<?= $dataInicio ?>" style="font-size:14px;padding:10px;text-align:left;letter-spacing:0;">
+                    </div>
+                    <div class="atm-input-group" style="flex:1;margin-bottom:0;">
+                        <label for="data_fim">Até</label>
+                        <input type="date" id="data_fim" name="data_fim" value="<?= $dataFim ?>" style="font-size:14px;padding:10px;text-align:left;letter-spacing:0;">
+                    </div>
+                    <button type="submit" class="atm-btn" style="width:auto;padding:10px 16px;white-space:nowrap;">Filtrar</button>
+                </form>
+
+                <?php if (empty($movimentos)): ?>
+                    <p class="atm-empty">Nenhum movimento neste período.</p>
+                <?php else: ?>
+                    <div style="max-height:300px;overflow-y:auto;">
                         <table class="atm-table">
                             <thead>
                                 <tr>
@@ -61,8 +82,8 @@ $movimentos = $conta->getUltimosMovimentos(5);
                                     <tr>
                                         <td><?= date('d/m/Y H:i', strtotime($mov['data_hora'])) ?></td>
                                         <td><?= ucfirst($mov['tipo']) ?></td>
-                                        <td class="<?= in_array($mov['tipo'], ['entrada']) ? 'valor-positivo' : 'valor-negativo' ?>">
-                                            <?php if (in_array($mov['tipo'], ['entrada'])): ?>+<?php endif; ?>
+                                        <td class="<?= $mov['tipo'] === 'entrada' ? 'valor-positivo' : 'valor-negativo' ?>">
+                                            <?php if ($mov['tipo'] === 'entrada'): ?>+<?php endif; ?>
                                             € <?= number_format($mov['valor'], 2, ',', '.') ?>
                                         </td>
                                         <td><?= htmlspecialchars($mov['descricao'] ?? '-') ?></td>
@@ -70,8 +91,8 @@ $movimentos = $conta->getUltimosMovimentos(5);
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
-                    <?php endif; ?>
-                </div>
+                    </div>
+                <?php endif; ?>
 
                 <div class="atm-actions">
                     <a href="menu.php" class="atm-btn">Voltar ao Menu</a>

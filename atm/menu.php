@@ -2,6 +2,7 @@
 session_start();
 require_once __DIR__ . '/../classes/Database.php';
 require_once __DIR__ . '/../classes/Conta.php';
+require_once __DIR__ . '/../classes/helpers.php';
 
 if (!isset($_SESSION['atm_conta_id'])) {
     header('Location: index.php');
@@ -22,6 +23,7 @@ if (!$conta) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DevBank - Menu Multibanco</title>
     <link rel="stylesheet" href="../assets/style.css">
+    <script src="../assets/script.js" defer></script>
 </head>
 <body class="atm-page">
     <div class="atm-container">
@@ -55,8 +57,12 @@ if (!$conta) {
                         <span class="atm-menu-icon">4</span>
                         <span>Transferência</span>
                     </a>
-                    <a href="logout.php" class="atm-menu-item atm-menu-item-full atm-menu-exit">
+                    <a href="extrato.php" class="atm-menu-item">
                         <span class="atm-menu-icon">5</span>
+                        <span>Extrato</span>
+                    </a>
+                    <a href="logout.php" class="atm-menu-item atm-menu-item-full atm-menu-exit">
+                        <span class="atm-menu-icon">0</span>
                         <span>Sair</span>
                     </a>
                 </div>

@@ -13,6 +13,7 @@ if (!isset($_SESSION['admin_id'])) {
 $admin = new Admin($_SESSION['admin_id'], $_SESSION['admin_nome'], '', '', 'admin');
 $mensagem = '';
 $erro = '';
+$novoClienteId = 0;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = trim($_POST['nome'] ?? '');
@@ -21,8 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!empty($nome) && !empty($email) && !empty($password)) {
         try {
-            if ($admin->criarCliente($nome, $email, $password)) {
+            $novoId = $admin->criarCliente($nome, $email, $password);
+            if ($novoId) {
                 $mensagem = 'Cliente criado com sucesso!';
+                $novoClienteId = $novoId;
             } else {
                 $erro = 'Erro ao criar cliente.';
             }
@@ -58,7 +61,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="admin-content">
             <h2>Criar Novo Cliente</h2>
             <?php if ($mensagem): ?>
-                <div class="alert alert-success"><?= htmlspecialchars($mensagem) ?></div>
+                <div class="alert alert-success">
+                    <?= htmlspecialchars($mensagem) ?>
+                    <?php if ($novoClienteId > 0): ?>
+                        <br><br>
+                        <a href="abrir_conta.php?cliente_id=<?= $novoClienteId ?>" class="btn btn-primary">Abrir Conta para este Cliente</a>
+                    <?php endif; ?>
+                </div>
             <?php endif; ?>
             <?php if ($erro): ?>
                 <div class="alert alert-danger"><?= htmlspecialchars($erro) ?></div>

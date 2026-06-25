@@ -19,11 +19,9 @@ session_start();
                 <span class="landing-card-title">Multibanco</span>
                 <span class="landing-card-desc">Caixa Automática</span>
             </a>
-            <a href="admin/index.php" class="landing-card landing-card-admin">
-                <span class="landing-card-icon">🔐</span>
-                <span class="landing-card-title">Admin</span>
-                <span class="landing-card-desc">Painel de Administração</span>
-            </a>
+        </div>
+        <div class="landing-admin-link">
+            <a href="admin/index.php">🔐 Administração</a>
         </div>
     </div>
 </body>

@@ -62,7 +62,7 @@ Solução bancária modular com Painel Web de Administração e Simulador de Cai
 - Email: joao@email.com
 - Password: cliente123
 - Cartão: 1234567890123456
-- PIN: cliente123
+- PIN: 1234
 
 ## Como Testar Localmente (Amanhã)
 

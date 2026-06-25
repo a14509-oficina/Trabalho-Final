@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/Utilizador.php';
 require_once __DIR__ . '/Database.php';
+require_once __DIR__ . '/HistoricoTrait.php';
 
 class Admin extends Utilizador
 {
@@ -24,16 +25,17 @@ class Admin extends Utilizador
         return null;
     }
 
-    public function criarCliente(string $nome, string $email, string $password): bool
+    public function criarCliente(string $nome, string $email, string $password): int|false
     {
         $db = Database::getConnection();
         $hash = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $db->prepare('INSERT INTO utilizadores (nome, email, password, tipo) VALUES (:nome, :email, :password, \'cliente\')');
-        return $stmt->execute([
+        $ok = $stmt->execute([
             ':nome' => $nome,
             ':email' => $email,
             ':password' => $hash,
         ]);
+        return $ok ? (int) $db->lastInsertId() : false;
     }
 
     public static function listarClientes(): array

@@ -41,6 +41,10 @@ CREATE TABLE transacoes (
     FOREIGN KEY (conta_destino_id) REFERENCES contas(id) ON DELETE SET NULL
 );
 
+-- IMPORTANTE: Executa primeiro: php setup/gerar_hashes.php
+-- Depois substitui as hashes abaixo pelas geradas.
+-- PIN do cartao de teste: 1234 (4 digitos)
+
 INSERT INTO utilizadores (nome, email, password, tipo) VALUES
 ('Administrador', 'admin@devbank.com', '$2y$10$j4YR36F0C2GEY96CpgOnY.aI/cYgl1.dCKp/SJNzIIsfKgfvU3ZOq', 'admin'),
 ('João Silva', 'joao@email.com', '$2y$10$sd71yeMVYeb6Zy9TwmEpAeopfHJaYMbt4V.82BhoNwW3hbdMxG4Wq', 'cliente');

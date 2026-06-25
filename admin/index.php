@@ -49,8 +49,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="password">Palavra-passe</label>
                     <input type="password" id="password" name="password" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Entrar</button>
-            </form>
+                    <button type="submit" class="btn btn-primary">Entrar</button>
+                </form>
+                <div style="text-align:center;margin-top:20px;">
+                    <a href="../index.php" style="color:#999;text-decoration:none;font-size:12px;">← Voltar ao Multibanco</a>
+                </div>
+            </div>
         </div>
     </div>
 </body>

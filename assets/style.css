@@ -747,6 +747,22 @@ body {
     margin-top: 5px;
 }
 
+.landing-admin-link {
+    margin-top: 60px;
+}
+
+.landing-admin-link a {
+    color: rgba(255,255,255,0.2);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 1px;
+    transition: color 0.3s;
+}
+
+.landing-admin-link a:hover {
+    color: rgba(255,255,255,0.5);
+}
+
 @media (max-width: 768px) {
     .admin-nav {
         grid-template-columns: 1fr;

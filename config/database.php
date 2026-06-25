@@ -10,11 +10,10 @@ $isProd = file_exists(__DIR__ . '/../.prod');
 
 if ($isProd) {
     // ========== PRODUÇÃO (InfinityFree) ==========
-    // Preenche com os dados do teu InfinityFree
-    define('DB_HOST', 'sqlXXX.infinityfree.com');
-    define('DB_NAME', 'if0_XXXXX_devbank');
-    define('DB_USER', 'if0_XXXXX');
-    define('DB_PASS', 'tua_password_aqui');
+    define('DB_HOST', 'sql300.infinityfree.com');
+    define('DB_NAME', 'if0_42203983_devbank');
+    define('DB_USER', 'if0_42203983');
+    define('DB_PASS', 'kd7texfgXcf9n');
 } else {
     // ========== LOCAL ==========
     // Se der "No such file or directory" usa '127.0.0.1'

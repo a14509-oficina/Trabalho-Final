@@ -10,13 +10,16 @@ $isProd = file_exists(__DIR__ . '/../.prod');
 
 if ($isProd) {
     // ========== PRODUÇÃO (InfinityFree) ==========
+    // Preenche com os dados do teu InfinityFree
     define('DB_HOST', 'sqlXXX.infinityfree.com');
     define('DB_NAME', 'if0_XXXXX_devbank');
     define('DB_USER', 'if0_XXXXX');
     define('DB_PASS', 'tua_password_aqui');
 } else {
-    // ========== LOCAL (XAMPP) ==========
-    define('DB_HOST', '127.0.0.1');
+    // ========== LOCAL ==========
+    // Se der "No such file or directory" usa '127.0.0.1'
+    // Se der "Connection refused" usa 'localhost'
+    define('DB_HOST', 'localhost');
     define('DB_NAME', 'devbank');
     define('DB_USER', 'root');
     define('DB_PASS', '');

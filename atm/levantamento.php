@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/../classes/Database.php';
-require_once __DIR__ . '/../classes/Conta.php'; require_once __DIR__ . '/../classes/ContaCorrente.php'; require_once __DIR__ . '/../classes/ContaPoupanca.php';
+require_once __DIR__ . '/../classes/Conta.php';
 require_once __DIR__ . '/../classes/helpers.php';
 
 if (!isset($_SESSION['atm_conta_id'])) {

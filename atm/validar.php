@@ -2,7 +2,7 @@
 session_start();
 require_once __DIR__ . '/../classes/Database.php';
 require_once __DIR__ . '/../classes/Cartao.php';
-require_once __DIR__ . '/../classes/Conta.php'; require_once __DIR__ . '/../classes/ContaCorrente.php'; require_once __DIR__ . '/../classes/ContaPoupanca.php';
+require_once __DIR__ . '/../classes/Conta.php';
 require_once __DIR__ . '/../classes/helpers.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

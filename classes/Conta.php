@@ -130,8 +130,10 @@ class Conta
     protected static function criarInstancia(array $dados): self
     {
         if ($dados['tipo'] === 'poupanca') {
+            require_once __DIR__ . '/ContaPoupanca.php';
             return new ContaPoupanca($dados['id'], $dados['cliente_id'], $dados['tipo'], (float) $dados['saldo']);
         }
+        require_once __DIR__ . '/ContaCorrente.php';
         return new ContaCorrente($dados['id'], $dados['cliente_id'], $dados['tipo'], (float) $dados['saldo']);
     }
 }

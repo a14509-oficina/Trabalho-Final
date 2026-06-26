@@ -1,4 +1,3 @@
-
 CREATE TABLE IF NOT EXISTS utilizadores (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
@@ -48,7 +47,6 @@ CREATE TABLE IF NOT EXISTS login_log (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Dados iniciais (IGNORE para nao duplicar se ja existirem)
 INSERT IGNORE INTO utilizadores (nome, email, password, tipo) VALUES
 ('Administrador', 'admin@devbank.com', '$2y$10$j4YR36F0C2GEY96CpgOnY.aI/cYgl1.dCKp/SJNzIIsfKgfvU3ZOq', 'admin'),
 ('João Silva', 'joao@email.com', '$2y$10$sd71yeMVYeb6Zy9TwmEpAeopfHJaYMbt4V.82BhoNwW3hbdMxG4Wq', 'cliente');

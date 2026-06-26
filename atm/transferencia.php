@@ -202,9 +202,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <span class="atm-small-screen-text">Transferência</span>
                         </div>
                         <div class="atm-info-panel">
-                            <p class="info-title">Transferir</p>
-                            <p>Indique a conta destino e o valor.</p>
-                            <p>Não pode transferir para a mesma conta.</p>
                         </div>
                     </div>
                     <div class="atm-right-bottom">

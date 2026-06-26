@@ -129,9 +129,6 @@ if (!$conta) {
                             <span class="atm-small-screen-text">Menu</span>
                         </div>
                         <div class="atm-info-panel">
-                            <p class="info-title">Opções</p>
-                            <p>Selecione uma operação no ecrã.</p>
-                            <p>Use os botões laterais ou o teclado.</p>
                         </div>
                     </div>
                     <div class="atm-right-bottom">

@@ -138,8 +138,6 @@ $movimentos = $conta->getUltimosMovimentos(5);
                             <span class="atm-small-screen-text">Saldo</span>
                         </div>
                         <div class="atm-info-panel">
-                            <p class="info-title">Saldo</p>
-                            <p>Saldo disponível para movimentação.</p>
                         </div>
                     </div>
                     <div class="atm-right-bottom">

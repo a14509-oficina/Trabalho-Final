@@ -115,9 +115,6 @@ if (!verificarRateLimit('atm_login')) {
                             <span class="atm-small-screen-text">Bem-vindo</span>
                         </div>
                         <div class="atm-info-panel">
-                            <p class="info-title">Instruções</p>
-                            <p>Insira o número do cartão e PIN nos campos ao lado.</p>
-                            <p>Prima <strong>Confirmar</strong> para validar.</p>
                         </div>
                     </div>
                     <div class="atm-right-bottom">

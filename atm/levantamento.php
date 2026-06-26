@@ -185,9 +185,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <span class="atm-small-screen-text">Levantamento</span>
                         </div>
                         <div class="atm-info-panel">
-                            <p class="info-title">Limites</p>
-                            <p>Máximo: €200 (poupança)</p>
-                            <p>Saldo mínimo: €20</p>
                         </div>
                     </div>
                     <div class="atm-right-bottom">

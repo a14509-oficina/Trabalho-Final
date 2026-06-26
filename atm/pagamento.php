@@ -191,9 +191,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <span class="atm-small-screen-text">Pagamento</span>
                         </div>
                         <div class="atm-info-panel">
-                            <p class="info-title">Pagamentos</p>
-                            <p>Entidade: 5 dígitos</p>
-                            <p>Referência: até 15 dígitos</p>
                         </div>
                     </div>
                     <div class="atm-right-bottom">

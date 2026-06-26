@@ -161,9 +161,6 @@ $movimentos = $stmt->fetchAll();
                             <span class="atm-small-screen-text">Extrato</span>
                         </div>
                         <div class="atm-info-panel">
-                            <p class="info-title">Filtros</p>
-                            <p>Selecione o período pretendido.</p>
-                            <p>Use o calendário para escolher datas.</p>
                         </div>
                     </div>
                     <div class="atm-right-bottom">

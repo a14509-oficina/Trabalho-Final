@@ -862,26 +862,6 @@ body {
 
 .atm-info-panel {
     flex: 1;
-    padding: 6px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.atm-info-panel p {
-    color: #6a7a8a;
-    font-size: 9px;
-    line-height: 1.4;
-    margin-bottom: 4px;
-}
-
-.atm-info-panel .info-title {
-    color: #4a5a6a;
-    font-weight: 600;
-    font-size: 8px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 6px;
 }
 
 .atm-right-bottom {

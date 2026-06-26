@@ -135,6 +135,3 @@ class Conta
         return new ContaCorrente($dados['id'], $dados['cliente_id'], $dados['tipo'], (float) $dados['saldo']);
     }
 }
-
-require_once __DIR__ . '/ContaCorrente.php';
-require_once __DIR__ . '/ContaPoupanca.php';

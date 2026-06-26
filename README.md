@@ -51,25 +51,32 @@ Solução bancária modular com Painel Web de Administração e Simulador de Cai
 - MySQL 5.7+
 - Extensão PDO MySQL
 
-## Configuração
+## Configuração (InfinityFree)
 
-1. Abrir `config/database.php` e preencher as credenciais da base de dados
-2. Executar `php setup/gerar_hashes.php` para gerar as hashes
-3. Importar `script.sql` no MySQL
-4. Aceder via navegador
+1. Fazer upload de todos os ficheiros para o servidor
+2. No phpMyAdmin da InfinityFree, importar o ficheiro `script.sql`
+3. (Alternativa) Aceder a `/setup.php` no navegador para criar tabelas + dados automaticamente
+4. Aceder ao site
 
 ## Credenciais Padrão
 
 ### Administrador
-- Email: admin@devbank.com
-- Password: admin123
-- URL: `/admin/index.php`
+| Campo | Valor |
+|-------|-------|
+| URL | `/admin/index.php` |
+| Email | `admin@devbank.com` |
+| Password | `admin123` |
 
-### Cliente de Teste
-- Email: joao@email.com
-- Password: cliente123
+### Cliente de Teste (web)
+| Campo | Valor |
+|-------|-------|
+| URL | `/admin/index.php` (gerido pelo admin) |
+| Email | `joao@email.com` |
+| Password | `cliente123` |
 
-### ATM (Multibanco)
-- Cartão: 1234567890123456
-- PIN: 1234
-- URL: `/atm/index.php`
+### ATM / Multibanco
+| Campo | Valor |
+|-------|-------|
+| URL | `/atm/index.php` |
+| Cartão | `1234567890123456` |
+| PIN | `1234` |

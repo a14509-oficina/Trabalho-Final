@@ -1,5 +1,3 @@
-CREATE DATABASE IF NOT EXISTS devbank;
-USE devbank;
 
 CREATE TABLE utilizadores (
     id INT AUTO_INCREMENT PRIMARY KEY,

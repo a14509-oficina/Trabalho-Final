@@ -1,8 +1,6 @@
 <?php
 require_once __DIR__ . '/Database.php';
 require_once __DIR__ . '/HistoricoTrait.php';
-require_once __DIR__ . '/ContaCorrente.php';
-require_once __DIR__ . '/ContaPoupanca.php';
 
 class Conta
 {
@@ -137,3 +135,6 @@ class Conta
         return new ContaCorrente($dados['id'], $dados['cliente_id'], $dados['tipo'], (float) $dados['saldo']);
     }
 }
+
+require_once __DIR__ . '/ContaCorrente.php';
+require_once __DIR__ . '/ContaPoupanca.php';

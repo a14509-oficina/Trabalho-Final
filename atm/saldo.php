@@ -132,25 +132,7 @@ $movimentos = $conta->getUltimosMovimentos(5);
                         <a href="logout.php" class="atm-btn atm-btn-secondary" style="width:auto;padding:6px 12px;font-size:9px;">Sair</a>
                     </div>
                 </div>
-                <div class="atm-right">
-                    <div class="atm-right-top">
-                        <div class="atm-small-screen">
-                            <span class="atm-small-screen-text">Saldo</span>
-                        </div>
-                        <div class="atm-info-panel">
-                        </div>
-                    </div>
-                    <div class="atm-right-bottom">
-                        <div class="atm-right-slot">
-                            <span class="atm-right-slot-label">Pagamentos</span>
-                            <div class="atm-card-slot" style="max-width:50px;"></div>
-                        </div>
-                        <div class="atm-right-slot" style="margin-top:4px;">
-                            <span class="atm-right-slot-label">MB WAY</span>
-                            <span class="atm-reader-led green"></span>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>

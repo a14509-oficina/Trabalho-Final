@@ -2,17 +2,15 @@ Options -Indexes
 ServerSignature Off
 
 <FilesMatch "\.(sql|md)$">
-  Require all denied
+  Deny from all
 </FilesMatch>
 
 <FilesMatch "^\.">
-  Require all denied
+  Deny from all
 </FilesMatch>
 
-<IfModule mod_rewrite.c>
+<IfModule rewrite_module>
   RewriteEngine On
-  RewriteRule ^config/ - [F,L]
-  RewriteRule ^classes/ - [F,L]
-  RewriteRule ^setup/ - [F,L]
+  RewriteRule ^(config|classes|setup)/ - [F,L]
   RewriteRule ^script\.sql$ - [F,L]
 </IfModule>

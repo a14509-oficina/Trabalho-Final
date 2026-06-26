@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/Database.php';
 require_once __DIR__ . '/HistoricoTrait.php';
+require_once __DIR__ . '/ContaCorrente.php';
+require_once __DIR__ . '/ContaPoupanca.php';
 
 class Conta
 {

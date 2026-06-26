@@ -163,21 +163,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
                     <div class="atm-keypad">
-                        <button class="atm-key func-key">Anular</button>
-                        <button class="atm-key func-key">Corrigir</button>
-                        <button class="atm-key func-key">Limpar</button>
-                        <button class="atm-key">7</button>
-                        <button class="atm-key">8</button>
-                        <button class="atm-key">9</button>
-                        <button class="atm-key">4</button>
-                        <button class="atm-key">5</button>
-                        <button class="atm-key">6</button>
-                        <button class="atm-key">1</button>
-                        <button class="atm-key">2</button>
-                        <button class="atm-key">3</button>
-                        <button class="atm-key func-key">±</button>
-                        <button class="atm-key">0</button>
-                        <button class="atm-key confirm-key">OK</button>
+                        <button type="button" class="atm-key func-key">Anular</button>
+                        <button type="button" class="atm-key func-key">Corrigir</button>
+                        <button type="button" class="atm-key func-key">Limpar</button>
+                        <button type="button" class="atm-key">7</button>
+                        <button type="button" class="atm-key">8</button>
+                        <button type="button" class="atm-key">9</button>
+                        <button type="button" class="atm-key">4</button>
+                        <button type="button" class="atm-key">5</button>
+                        <button type="button" class="atm-key">6</button>
+                        <button type="button" class="atm-key">1</button>
+                        <button type="button" class="atm-key">2</button>
+                        <button type="button" class="atm-key">3</button>
+                        <button type="button" class="atm-key func-key">±</button>
+                        <button type="button" class="atm-key">0</button>
+                        <button type="button" class="atm-key confirm-key">OK</button>
                     </div>
                     <div class="atm-slot-row">
                         <div class="atm-cash-slot"></div>

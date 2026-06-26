@@ -61,6 +61,91 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// ========== TECLADO FÍSICO ATM ==========
+    const teclado = document.querySelector('.atm-keypad');
+    if (teclado) {
+        teclado.addEventListener('click', function (e) {
+            const key = e.target.closest('.atm-key');
+            if (!key) return;
+
+            const active = document.activeElement;
+            const isInput = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA');
+
+            const texto = key.textContent.trim();
+
+            // OK - submeter formulário
+            if (texto === 'OK') {
+                const form = document.querySelector('.atm-form');
+                if (form) form.submit();
+                return;
+            }
+
+            // Anular - voltar atrás
+            if (texto === 'Anular') {
+                const backLink = document.querySelector('.atm-actions a:first-child, .atm-btn-secondary');
+                if (backLink) { window.location.href = backLink.href; }
+                else { window.history.back(); }
+                return;
+            }
+
+            // Limpar - limpar campo
+            if (texto === 'Limpar') {
+                if (isInput) {
+                    active.value = '';
+                    active.focus();
+                }
+                return;
+            }
+
+            // Corrigir - apagar último caracter
+            if (texto === 'Corrigir') {
+                if (isInput) {
+                    const start = active.selectionStart;
+                    if (start > 0) {
+                        active.value = active.value.slice(0, start - 1) + active.value.slice(active.selectionEnd);
+                        active.setSelectionRange(start - 1, start - 1);
+                    }
+                    active.focus();
+                }
+                return;
+            }
+
+            // Números - inserir no campo focado
+            if (/^[0-9]$/.test(texto)) {
+                if (isInput) {
+                    const start = active.selectionStart;
+                    const end = active.selectionEnd;
+                    active.value = active.value.slice(0, start) + texto + active.value.slice(end);
+                    active.setSelectionRange(start + 1, start + 1);
+                    active.focus();
+                    // Disparar evento input para formatadores
+                    active.dispatchEvent(new Event('input', { bubbles: true }));
+                } else {
+                    // Se nenhum input focado, focar o primeiro input do formulário
+                    const firstInput = document.querySelector('.atm-form input');
+                    if (firstInput && !firstInput.value) {
+                        firstInput.value = texto;
+                        firstInput.focus();
+                        firstInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    }
+                }
+                return;
+            }
+
+            // ± ou . - inserir no campo focado
+            if (texto === '±' || texto === '.') {
+                if (isInput) {
+                    const start = active.selectionStart;
+                    const end = active.selectionEnd;
+                    active.value = active.value.slice(0, start) + '.' + active.value.slice(end);
+                    active.setSelectionRange(start + 1, start + 1);
+                    active.focus();
+                    active.dispatchEvent(new Event('input', { bubbles: true }));
+                }
+            }
+        });
+    }
+
 // ========== IMPRIMIR COMPROVATIVO ==========
 function imprimirComprovativo() {
     const receipt = document.getElementById('comprovativo');

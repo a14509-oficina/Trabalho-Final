@@ -25,7 +25,7 @@ class Admin extends Utilizador
         return null;
     }
 
-    public function criarCliente(string $nome, string $email, string $password): int|false
+    public function criarCliente(string $nome, string $email, string $password)
     {
         $db = Database::getConnection();
         $hash = password_hash($password, PASSWORD_DEFAULT);
@@ -46,7 +46,7 @@ class Admin extends Utilizador
         return $stmt->fetchAll();
     }
 
-    public function abrirConta(int $clienteId, string $tipo): int|false
+    public function abrirConta(int $clienteId, string $tipo)
     {
         $db = Database::getConnection();
         $stmt = $db->prepare('INSERT INTO contas (cliente_id, tipo, saldo) VALUES (:cliente_id, :tipo, 0.00)');

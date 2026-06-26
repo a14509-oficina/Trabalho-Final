@@ -1,16 +1,1 @@
 Options -Indexes
-ServerSignature Off
-
-<FilesMatch "\.(sql|md)$">
-  Deny from all
-</FilesMatch>
-
-<FilesMatch "^\.">
-  Deny from all
-</FilesMatch>
-
-<IfModule rewrite_module>
-  RewriteEngine On
-  RewriteRule ^(config|classes|setup)/ - [F,L]
-  RewriteRule ^script\.sql$ - [F,L]
-</IfModule>

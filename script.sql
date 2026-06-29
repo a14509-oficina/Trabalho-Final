@@ -57,3 +57,15 @@ INSERT IGNORE INTO contas (cliente_id, tipo, saldo) VALUES
 
 INSERT IGNORE INTO cartoes (conta_id, numero_cartao, pin) VALUES
 (1, '1234567890123456', '$2y$10$sd71yeMVYeb6Zy9TwmEpAeopfHJaYMbt4V.82BhoNwW3hbdMxG4Wq');
+
+INSERT IGNORE INTO utilizadores (nome, email, password, tipo) VALUES
+('Ana Silva', 'ana@email.com', '$2y$10$sd71yeMVYeb6Zy9TwmEpAeopfHJaYMbt4V.82BhoNwW3hbdMxG4Wq', 'cliente'),
+('Rui Santos', 'rui@email.com', '$2y$10$sd71yeMVYeb6Zy9TwmEpAeopfHJaYMbt4V.82BhoNwW3hbdMxG4Wq', 'cliente');
+
+INSERT IGNORE INTO contas (cliente_id, tipo, saldo) VALUES
+(3, 'corrente', 2500.00),
+(4, 'corrente', 3200.00);
+
+INSERT IGNORE INTO cartoes (conta_id, numero_cartao, pin) VALUES
+(3, '1029899247927652', '$2y$10$sd71yeMVYeb6Zy9TwmEpAeopfHJaYMbt4V.82BhoNwW3hbdMxG4Wq'),
+(4, '9112416668034772', '$2y$10$sd71yeMVYeb6Zy9TwmEpAeopfHJaYMbt4V.82BhoNwW3hbdMxG4Wq');

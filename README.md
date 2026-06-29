@@ -78,5 +78,7 @@ Solução bancária modular com Painel Web de Administração e Simulador de Cai
 | Campo | Valor |
 |-------|-------|
 | URL | `/atm/index.php` |
-| Cartão | `1234567890123456` |
-| PIN | `1234` |
+| Cartão 1 (João Silva) | `1234567890123456` |
+| Cartão 2 (Ana Silva) | `1029899247927652` |
+| Cartão 3 (Rui Santos) | `9112416668034772` |
+| PIN (todos) | `1234` |
